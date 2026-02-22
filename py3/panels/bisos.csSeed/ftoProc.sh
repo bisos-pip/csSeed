@@ -5,7 +5,7 @@ SEED="
 *  /[dblock]/ /Seed/ :: [[file:/bisos/core/bsip/bin/seedFtoCommon.sh]] |
 "
 FILE="
-*  /This File/ :: /l/pip/facter/py3/panels/bisos.facter/ftoProc.sh
+*  /This File/ :: /bisos/git/bxRepos/bisos-pip/csSeed/py3/panels/bisos.csSeed/ftoProc.sh
 "
 if [ "${loadFiles}" == "" ] ; then
     /bisos/core/bsip/bin/seedFtoCommon.sh -l $0 "$@"
@@ -31,7 +31,9 @@ README
 
 ####+BEGIN: bx:dblock:pypi:bash:nodesList :types ""
 nodesList="
-facter-perfSysd.cs
+dotSPCS-SpreadPlantedCS
+seedCsDesign
+dotPCS-PlantedCS
 _nodeBase_
 "
 ####+END:

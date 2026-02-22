@@ -82,7 +82,7 @@ import collections
 
 import atexit
 
-from bisos.b import cmndsSeed
+from bisos.csSeed import seedsLib
 
 seedCSMU = 'cmnds-seed.cs'
 
@@ -98,7 +98,7 @@ def atexit_plantWithWhich(
 ** [[elisp:(org-cycle)][| *DocStr | ] shim over b.importFile.plantWithWhich
     #+end_org """
 
-    cmndsSeed.plantWithWhich(seedCSMU)
+    seedsLib.plantWithWhich(seedCSMU)
 
 
 ####+BEGIN: b:py3:cs:framework/endOfFile :basedOn "classification"

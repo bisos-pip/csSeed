@@ -1,8 +1,22 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 
+import typing ; csInfo: typing.Dict[str, typing.Any] = {'category': 'csxu', 'name': 'cmnds-seed.cs', 'features': ['direct', 'seeded']}
+
+csInfo['summary'] = """ #+begin_org
+* ~[Summary]~ :: A =CmndSvc= (Pkged,) A most basic csxu, to be augmented when planted
+#+end_org """
+
+csInfo['description'] = """ #+begin_org
+* [[elisp:(org-cycle)][| ~csInfoDescription~ |]] :: This csxu-seed does not dot contain any special cmnds. It is a most basic seed.
+#+end_org """
+
 """ #+begin_org
-* ~[Summary]~ :: A =CmndSvc= for
+* [[elisp:(org-cycle)][| ~DevDescription~ |]] :: [[file:/bisos/panels/bisos-core/bisos-pip/bisos.tocsModules/_nodeBase_/fullUsagePanel-en.org][BISOS Panel]]   [[elisp:(org-cycle)][| ]]
+
+** Status: In use with BISOS
+** /[[elisp:(org-cycle)][| Planned Improvements |]]/ :
+*** TODO Review Panel's Design and Evolution section.
 #+end_org """
 
 ####+BEGIN: b:py3:cs:file/dblockControls :classification "cs-u"
@@ -34,27 +48,18 @@
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:file/particulars-csInfo :status "inUse"
+####+BEGINNOT: b:py3:file/particulars-csInfo :status "inUse"
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
-import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['seedSbom'], }
-csInfo['version'] = '202409222227'
+# import typing
+# csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['cmnds-seed'], }
+csInfo['version'] = '202602063614'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'seedSbom-Panel.org'
+csInfo['panel'] = 'cmnds-seed-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
-
-""" #+begin_org
-* [[elisp:(org-cycle)][| ~Description~ |]] :: [[file:/bisos/git/auth/bxRepos/blee-binders/bisos-core/COMEEGA/_nodeBase_/fullUsagePanel-en.org][BISOS COMEEGA Panel]]
-Module description comes here.
-** Relevant Panels:
-** Status: In use with BISOS
-** /[[elisp:(org-cycle)][| Planned Improvements |]]/ :
-*** TODO complete fileName in particulars.
-#+end_org """
 
 ####+BEGIN: b:prog:file/orgTopControls :outLevel 1
 """ #+begin_org
@@ -88,17 +93,16 @@ import collections
 from bisos.b import enhancedExceptions
 ####+END:
 
-####+BEGIN: b:py3:cs:framework/csmuSeeded :comment "Import plantedCsu"
+####+BEGIN: b:py3:cs:framework/csxuSeeded :comment "Import plantedCsu"
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] =Seeded CSMU= Import plantedCsu
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Seeded CSXU~ Import plantedCsu
 #+end_org """
-from bisos.b import cmndsSeed
-if b.cs.G.plantOfThisSeed is not None:
-    b.importFileAs('plantedCsu', b.cs.G.plantOfThisSeed, __file__, __name__)
+from bisos.csSeed import seedsLib
+if seedsLib.seededCsxuInfo.plantOfThisSeed is not None:
+    b.importFileAs('plantedCsu', seedsLib.seededCsxuInfo.plantOfThisSeed, __file__, __name__)
 ####+END:
 
 import sys
-
 
 
 """ #+begin_org
@@ -106,25 +110,24 @@ import sys
 #+BEGIN_SRC emacs-lisp
 (setq  b:py:cs:csuList
   (list
-   "bisos.b.cs.ro"
-   ;;"bisos.csPlayer.bleep"
+   "bisos.csPlayer.csxuFps_csu"
    "plantedCsu"
  ))
 #+END_SRC
 #+RESULTS:
-| bisos.b.cs.ro | plantedCsu |
+| bisos.csPlayer.csxuFps_csu | plantedCsu |
 #+end_org """
 
-####+BEGIN: b:py3:cs:framework/csuListProc :pyImports t :csuImports t :csuParams t
+####+BEGIN: b:py3:cs:framework/csuListImportPlus :pyImports t :csuImports t :csuParams t
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] ~Process CSU List~ with /2/ in csuList pyImports=t csuImports=t csuParams=t
 #+end_org """
 
-from bisos.b.cs import ro
+from bisos.csPlayer import csxuFps_csu
 
-csuList = [ 'bisos.b.cs.ro', 'plantedCsu', ]
+csuList = [ 'bisos.csPlayer.csxuFps_csu', 'plantedCsu', ]
 
-if b.cs.G.plantOfThisSeed is None:
+if seedsLib.seededCsxuInfo.plantOfThisSeed is None:
     csuList.remove('plantedCsu')
 
 g_importedCmndsModules = cs.csuList_importedModules(csuList)
@@ -135,7 +138,6 @@ def g_extraParams():
     cs.argsparseBasedOnCsParams(csParams)
 
 ####+END:
-
 
 ####+BEGIN: b:py3:cs:main/exposedSymbols :classes ()
 """ #+begin_org
@@ -178,67 +180,14 @@ class examples(cs.Cmnd):
         self.cmndDocStr(f""" #+begin_org ***** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Conventional top level example.
         #+end_org """)
 
-        # od = collections.OrderedDict
-        # cmnd = cs.examples.cmndEnter
-        # literal = cs.examples.execInsert
-
         cs.examples.myName(cs.G.icmMyName(), cs.G.icmMyFullName())
-
         cs.examples.commonBrief()
+        csxuFps_csu.playerMenuExamples().pyCmnd()
 
-        # bleep.examples_csBasic()
-
-        if b.cs.G.plantOfThisSeed is not None:
-            cmndsSeed.plantedCsuExamplesRun()
-
-        b.ignore(ro.__doc__,  cmndArgsSpecDict)  # We are not using these modules, but they are auto imported.
+        if seedsLib.seededCsxuInfo.seedOfThisPlant is not None:
+            seedsLib.plantedCsuExamplesRun()
 
         return(cmndOutcome)
-
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "testException" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<testException>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
-#+end_org """
-class testException(cs.Cmnd):
-    cmndParamsMandatory = [ ]
-    cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
-
-    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-    def cmnd(self,
-             rtInv: cs.RtInvoker,
-             cmndOutcome: b.op.Outcome,
-    ) -> b.op.Outcome:
-
-        failed = b_io.eh.badOutcome
-        callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
-            return failed(cmndOutcome)
-####+END:
-        self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  A test command that raises an exception.
-        #+end_org """)
-
-        if self.justCaptureP(): return cmndOutcome
-
-        # Test variables for enhanced exception output
-        seedCSMU = {'cmndName': 'testException', 'module': 'test_module'}
-        inExecName = 'testException.cs'
-        pathEnvVar = '/usr/bin:/bin'
-
-        from bisos.b import cmndsSeed
-
-        seedCSMU = 'seededCmnds.cs'
-        cmndsSeed.plantWithWhich(seedCSMU)
-
-
-        # Intentionally raise an exception
-        raise ValueError(f"Test exception with seedCSMU={seedCSMU}")
-
-        return cmndOutcome.set(
-            opError=b.OpError.Success,
-        )
-
 
 
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep nil :title "Main" :anchor ""  :extraInfo "Framework Dblock"

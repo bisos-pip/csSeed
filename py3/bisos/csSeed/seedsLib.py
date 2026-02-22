@@ -81,9 +81,16 @@ from bisos.b import b_io
 import collections
 ####+END:
 
-import sys
+from bisos.csSeed import cmnds_seedInfo
 
-from bisos.b import cmnd_seedInfo
+import sys
+# import types
+import pathlib
+import shutil
+import os
+
+from dataclasses import dataclass
+
 
 ####+BEGIN: bx:cs:py3:section :title "Public Classes"
 """ #+begin_org
@@ -97,6 +104,31 @@ from bisos.b import cmnd_seedInfo
 #+end_org """
 ####+END:
 
+
+####+BEGIN: b:py3:class/decl :className "SeededCsxuInfo" :superClass "object" :classType "basic" :deco "@dataclass" :comment "Abstraction of a  Interface"
+""" #+begin_org
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Cls-basic  [[elisp:(outline-show-subtree+toggle)][||]] /SeededCsxuInfo/  superClass=object =Abstraction of a  Interface=  [[elisp:(org-cycle)][| ]]
+#+end_org """
+@dataclass
+class SeededCsxuInfo(object):
+####+END:
+    """
+** Abstraction of
+"""
+    seedOfThisPlant: str | None = None
+    plantOfThisSeed: str | None = None
+
+    # Singleton using New
+    _instance = None
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+# Singleton Instantiation
+seededCsxuInfo = SeededCsxuInfo()
+
+
 ####+BEGIN: b:py3:cs:func/typing :funcName "plantedCsuExamplesRun" :funcType "extTyped" :deco "track"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-T-extTyped [[elisp:(outline-show-subtree+toggle)][||]] /plantedCsuExamplesRun/  deco=track  [[elisp:(org-cycle)][| ]]
@@ -109,7 +141,7 @@ def plantedCsuExamplesRun(
 ** [[elisp:(org-cycle)][| *DocStr | ] Run each of examplesFuncsList or examplesOfPlantedCsu
     #+end_org """
 
-    examplesFuncsList = cmnd_seedInfo.cmndsSeedInfo.examplesFuncsList
+    examplesFuncsList = cmnds_seedInfo.cmndsSeedInfo.examplesFuncsList
     if examplesFuncsList is not None:
         for each in examplesFuncsList:
             each()
@@ -144,13 +176,28 @@ def examplesOfPlantedCsu(
 @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
 def plantWithWhich(
 ####+END:
-        seededCsmu: str,
+        seededCsxu: str,
 ) -> None:
     """ #+begin_org
 ** [[elisp:(org-cycle)][| *DocStr | ] shim over b.importFile.plantWithWhich
     #+end_org """
 
-    b.importFile.plantWithWhich(seededCsmu)
+    execPath = shutil.which(seededCsxu)
+    if execPath is None:
+        pathEnvVar = os.environ.get("PATH")
+        raise ImportError(f"Found nothing for {seededCsxu} -- PATH={pathEnvVar}")
+
+    execFilePath = pathlib.Path(execPath).resolve()
+
+    seededCsxuInfo.seedOfThisPlant = seededCsxu
+    seededCsxuInfo.plantOfThisSeed = sys.argv[0]
+
+    # print(f"{seededCsxuInfo.seedOfThisPlant} -- {seededCsxuInfo.plantOfThisSeed}")
+
+    return (
+        b.importFile.execWithWhich(seededCsxu,)
+    )
+
 
 ####+BEGIN: b:py3:cs:framework/endOfFile :basedOn "classification"
 """ #+begin_org

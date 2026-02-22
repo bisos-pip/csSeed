@@ -4,12 +4,10 @@
 * Panel::  [[file:/bisos/git/auth/bxRepos/bisos-pip/b/py3/panels/bisos.b/bisos.b.cs/_nodeBase_/fullUsagePanel-en.org]]
 #+end_org """
 
-
+from bisos.csSeed import cmnds_seed
 from bisos import b
-from bisos.b import cmnds_seed
 from bisos.b import cs
 from bisos.b import b_io
-
 
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "helloWorld" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
@@ -38,7 +36,7 @@ class helloWorld(cs.Cmnd):
 
         self.captureRunStr(""" #+begin_org
 #+begin_src sh :results output :session shared
-  plantedHelloWorld.cs -i helloWorld
+  helloWorld.pcs -i helloWorld
 #+end_src
 #+RESULTS:
 : Hello World
