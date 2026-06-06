@@ -97,7 +97,7 @@ import collections
 import pathlib
 import enum
 
-from bisos.gitist import gitist_seedInfo
+from bisos.csSeed import csCmndsList_seedInfo
 
 import logging
 log = logging.getLogger(__name__)
@@ -215,17 +215,6 @@ facterModule.cs -i examples
         elif  reactFramework== ReactFramework.NoneFound:
             log.info("No React framework detected; skipping Nginx restart.")
 
-        cs.examples.menuChapter('=React/Gatsby NPM Clean=')
-
-        reactFramework = whichReactFramework_()
-        if reactFramework == ReactFramework.React:
-            literal("npm run clean")
-            literal("npm run clean && nginx-sysd.pcs -i sysdSysUnit  restart")
-        elif reactFramework == ReactFramework.Gatsby:
-            literal("gatsby clean")
-            literal("gatsby clean && nginx-sysd.pcs -i sysdSysUnit  restart")
-        elif  reactFramework== ReactFramework.NoneFound:
-            log.info("No React framework detected; skipping Nginx restart.")
 
         return(cmndOutcome)
 
@@ -276,8 +265,8 @@ facterModule.cs -i examples
         cwd = pathlib.Path.cwd()
 
         print(f"{cwd}")
-        print(f"bx-browse-url.sh  http://{gitist_seedInfo.gitistSeedInfo.webVirtualDomain}")
-        print(f"bx-browse-url.sh  http://localhost:{gitist_seedInfo.gitistSeedInfo.dev_webPortNu}")
+        # print(f"bx-browse-url.sh  http://{gitist_seedInfo.gitistSeedInfo.webVirtualDomain}")
+        # print(f"bx-browse-url.sh  http://localhost:{gitist_seedInfo.gitistSeedInfo.dev_webPortNu}")
 
         return(cmndOutcome)
 

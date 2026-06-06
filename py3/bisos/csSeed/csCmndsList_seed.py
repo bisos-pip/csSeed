@@ -28,8 +28,8 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/bxRepos/bisos-pip/gitist/py3/bisos/gitist/gitist_seed.py
-** File True Name: /bisos/git/auth/bxRepos/bisos-pip/gitist/py3/bisos/gitist/gitist_seed.py
+** This File: /bisos/git/auth/bxRepos/bisos-pip/csSeed/py3/bisos/csSeed/csCmndsList_seed.py
+** File True Name: /bisos/git/auth/bxRepos/bisos-pip/csSeed/py3/bisos/csSeed/csCmndsList_seed.py
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -39,9 +39,9 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 if 'csInfo' not in globals(): import typing ; csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['loadAs'], }
-csInfo['version'] = '202606051742'
+csInfo['version'] = '202606065544'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'gitist_seed-Panel.org'
+csInfo['panel'] = 'csCmndsList_seed-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
@@ -85,7 +85,7 @@ import atexit
 
 from bisos.csSeed import seedsLib
 
-seedCSMU = 'gitist.cs'
+seedCSMU = 'csCmndsList-seed.cs'
 
 ####+BEGIN: b:py3:cs:func/typing :funcName "atexit_plantWithWhich" :funcType "extTyped" :comment "expects seedGraphviz.cs" :deco "atexit.register"
 """ #+begin_org

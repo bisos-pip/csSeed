@@ -9,24 +9,17 @@ import collections
 
 from bisos.csSeed import seedsLib
 
-from bisos.gitist import gitist_seed #  noqa: F401  # type: ignore[unused-import] _atExit_
-from bisos.gitist import gitist_seedInfo
+from bisos.csSeed import csCmndsList_seed #  noqa: F401  # type: ignore[unused-import] _atExit_
+from bisos.csSeed import csCmndsList_seedInfo
 
-from bisos.gitist import csCmnd_seedInfo
-csCmnd = csCmnd_seedInfo.csCmnd
+csCmnd = csCmndsList_seedInfo.csCmnd
 
 csCmndsList = [
     csCmnd("verb", pars={"name", "value"}, args="args come Here", doContinue=True)
 ]
 
-csCmnd_seedInfo.setup(
+csCmndsList_seedInfo.setup(
     csCmndsList=csCmndsList,
-)
-
-
-gitist_seedInfo.setup(
-    webVirtualDomain="csWebPlayer.here",
-    examplesFuncsList=[lambda: examples_pcs(),],  # lambda is for forward reference
 )
 
 def examples_pcs() -> None:
@@ -42,4 +35,4 @@ def examples_pcs() -> None:
 
     uploadPars = od([('upload', "example")])
     cmnd('targetRun', csName=csName, pars=uploadPars , args="""localhost""")
-    print(f"{csCmnd_seedInfo.csCmndSeedInfo.csCmndsList}")
+    print(f"{csCmndsList_seedInfo.csCmndSeedInfo.csCmndsList}")
