@@ -28,7 +28,8 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/bxRepos/bisos-pip/binsprep/py3/bisos/binsprep/binsprep.py
+** This File: /bisos/git/bxRepos/bisos-pip/gitist/py3/bisos/gitist/gitist_seed.py
+** File True Name: /bisos/git/auth/bxRepos/bisos-pip/gitist/py3/bisos/gitist/gitist_seed.py
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -37,11 +38,10 @@
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
-import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['binsprep'], }
-csInfo['version'] = '202409221313'
+if 'csInfo' not in globals(): import typing ; csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['loadAs'], }
+csInfo['version'] = '202606051742'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'binsprep-Panel.org'
+csInfo['panel'] = 'gitist_seed-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
@@ -73,9 +73,10 @@ Module description comes here.
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] *Imports* =Based on Classification=cs-u=
 #+end_org """
-from bisos import b
+from bisos import b  # noqa: E402
 from bisos.b import cs
 from bisos.b import b_io
+from bisos.common import csParam
 
 import collections
 # ####+END:
@@ -84,7 +85,7 @@ import atexit
 
 from bisos.csSeed import seedsLib
 
-seedCSMU = 'cmnds-seed.cs'
+seedCSMU = 'gitist.cs'
 
 ####+BEGIN: b:py3:cs:func/typing :funcName "atexit_plantWithWhich" :funcType "extTyped" :comment "expects seedGraphviz.cs" :deco "atexit.register"
 """ #+begin_org
@@ -93,12 +94,13 @@ seedCSMU = 'cmnds-seed.cs'
 @atexit.register
 def atexit_plantWithWhich(
 ####+END:
+        asExpected: str=seedCSMU,
 ) -> None:
     """ #+begin_org
 ** [[elisp:(org-cycle)][| *DocStr | ] shim over b.importFile.plantWithWhich
     #+end_org """
 
-    seedsLib.plantWithWhich(seedCSMU)
+    seedsLib.plantWithWhich(asExpected)
 
 
 ####+BEGIN: b:py3:cs:framework/endOfFile :basedOn "classification"

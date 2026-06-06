@@ -4,6 +4,7 @@
 * ~[Summary]~ :: A =CmndSvc= for
 #+end_org """
 
+
 ####+BEGIN: b:py3:cs:file/dblockControls :classification "cs-u"
 """ #+begin_org
 * [[elisp:(org-cycle)][| /Control Parameters Of This File/ |]] :: dblk ctrls classifications=cs-u
@@ -25,6 +26,19 @@
 #+end_org """
 ####+END:
 
+####+BEGIN: b:py3:file/particulars-csInfo :status "inUse"
+""" #+begin_org
+* *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
+#+end_org """
+if 'csInfo' not in globals(): import typing ; csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['loadAs'], }
+csInfo['version'] = '202606063531'
+csInfo['status']  = 'inUse'
+csInfo['panel'] = 'seedsLib-Panel.org'
+csInfo['groupingType'] = 'IcmGroupingType-pkged'
+csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
+####+END:
+
+
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
@@ -34,18 +48,6 @@
 #+end_org """
 ####+END:
 
-####+BEGIN: b:py3:file/particulars-csInfo :status "inUse"
-""" #+begin_org
-* *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
-#+end_org """
-import typing
-csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['cmndsSeed'], }
-csInfo['version'] = '202503010302'
-csInfo['status']  = 'inUse'
-csInfo['panel'] = 'cmndsSeed-Panel.org'
-csInfo['groupingType'] = 'IcmGroupingType-pkged'
-csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
-####+END:
 
 """ #+begin_org
 * [[elisp:(org-cycle)][| ~Description~ |]] :: [[file:/bisos/git/auth/bxRepos/blee-binders/bisos-core/COMEEGA/_nodeBase_/fullUsagePanel-en.org][BISOS COMEEGA Panel]]
@@ -70,6 +72,7 @@ Module description comes here.
 #+end_org """
 ####+END:
 
+
 ####+BEGIN: b:py3:cs:framework/imports :basedOn "classification"
 """ #+begin_org
 *  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CsFrmWrk   [[elisp:(outline-show-subtree+toggle)][||]] *Imports* =Based on Classification=cs-u=
@@ -81,7 +84,8 @@ from bisos.b import b_io
 import collections
 ####+END:
 
-from bisos.csSeed import cmnds_seedInfo
+
+from bisos.csSeed import addCmnds_seedInfo
 
 import sys
 # import types
@@ -90,6 +94,7 @@ import shutil
 import os
 
 from dataclasses import dataclass
+
 
 
 ####+BEGIN: bx:cs:py3:section :title "Public Classes"
@@ -141,7 +146,7 @@ def plantedCsuExamplesRun(
 ** [[elisp:(org-cycle)][| *DocStr | ] Run each of examplesFuncsList or examplesOfPlantedCsu
     #+end_org """
 
-    examplesFuncsList = cmnds_seedInfo.cmndsSeedInfo.examplesFuncsList
+    examplesFuncsList = addCmnds_seedInfo.cmndsSeedInfo.examplesFuncsList
     if examplesFuncsList is not None:
         for each in examplesFuncsList:
             each()

@@ -5,7 +5,7 @@
 * Overview and Relevant Pointers
 #+end_org """
 
-from bisos.csSeed import cmnds_seed
+from bisos.csSeed import addCmnds_seed
 from bisos import b
 from bisos.b import cs
 from bisos.b import b_io
