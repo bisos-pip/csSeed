@@ -98,6 +98,7 @@ import pathlib
 import enum
 
 from bisos.csSeed import csCmndsList_seedInfo
+from bisos.csSeed import seedsLib
 
 import logging
 log = logging.getLogger(__name__)
@@ -154,70 +155,33 @@ class examples_csu(cs.Cmnd):
             return failed(cmndOutcome)
 ####+END:
         self.cmndDocStr(f""" #+begin_org
-** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Basic example command.
-        #+end_org """)
-
-        self.captureRunStr(""" #+begin_org
-*** Run Results
-#+begin_src sh :results output :session shared
-facterModule.cs -i examples 
-  #+end_src
-#+RESULTS:
-#+begin_example
-#+end_example
-
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]  Examples for the CsCmnds declared by the plant.
         #+end_org """)
 
         od = collections.OrderedDict
         cmnd = cs.examples.cmndEnter
-        literal = cs.examples.execInsert
 
-        #  -v 1 --callTrackings monitor+ --callTrackings invoke+
-        pars_debug_verbosity = od([('verbosity', "1"),])
-        pars_debug_monitor = od([('callTrackings', "monitor+"),])
-        pars_debug_invoke = od([('callTrackings', "invoke+"),])
-        pars_debug_full = (pars_debug_verbosity | pars_debug_monitor | pars_debug_invoke)
+        csCmndsList = csCmndsList_seedInfo.csCmndSeedInfo.csCmndsList
 
-        pars_cluster_default = od([('cluster', "default"),])
+        if csCmndsList is not None and len(csCmndsList) != 0:
+            cs.examples.menuChapter(f'=CsCmnds List -- {len(csCmndsList)} cmnds=')
+            for eachCsCmnd in csCmndsList:
+                cmnd(
+                    eachCsCmnd.verb,
+                    pars=eachCsCmnd.pars or od(),
+                    args=eachCsCmnd.args or "",
+                    comment=f" # doContinue={eachCsCmnd.doContinue}",
+                )
+        else:
+            cs.examples.menuChapter('=CsCmnds List -- empty=')
 
-        cs.examples.menuChapter('=Determine Which React Framework is Being Used=')
-        cmnd('whichReactFramework', comment=f"""# DEBUG Small Batch""",)
-
-        cs.examples.menuChapter('=MONITOR Nginx and related services=')
-        literal("nginx-sysd.pcs")
-        literal("nginx-sysd.pcs -i sysdSysUnit  status")
-        literal("journalctl -u nginx 200  # Traffic in and out of nginx")
-
-        cs.examples.menuChapter('=RESTART Nginx and related services=')
-        literal("nginx-sysd.pcs -i sysdSysUnit  restart")
-
-        cs.examples.menuChapter('=React/Gatsby NPM Development=')
-
-        reactFramework = whichReactFramework_()
-        if reactFramework == ReactFramework.React:
-            literal("npm run watch")
-        elif reactFramework == ReactFramework.Gatsby:
-            literal("gatsby develop")
-        elif  reactFramework== ReactFramework.NoneFound:
-            log.info("No React framework detected; skipping Nginx restart.")
-
-        cs.examples.menuChapter('=React/Gatsby NPM Production Build=')
-
-        reactFramework = whichReactFramework_()
-        if reactFramework == ReactFramework.React:
-            literal("npm run build")
-            literal("npm run build && nginx-sysd.pcs -i sysdSysUnit  restart") 
-            literal("npm run clean && npm install && npm run build && nginx-sysd.pcs -i sysdSysUnit  restart")
-        elif reactFramework == ReactFramework.Gatsby:
-            literal("gatsby build")
-            literal("gatsby build && nginx-sysd.pcs -i sysdSysUnit  restart")
-            literal("gatsby clean && npm install && gatsby build && nginx-sysd.pcs -i sysdSysUnit  restart")
-        elif  reactFramework== ReactFramework.NoneFound:
-            log.info("No React framework detected; skipping Nginx restart.")
-
+        cs.examples.menuChapter('=Run the declared CsCmnds=')
+        cmnd('csCmndsRun', args="all", comment=f" # Run all declared csCmnds")
+        if csCmndsList is not None and len(csCmndsList) != 0:
+            verbs = " ".join(each.verb for each in csCmndsList if each.verb)
+            cmnd('csCmndsRun', args=verbs, comment=f" # Run the specified csCmnds by verb")
 
         return(cmndOutcome)
-
 
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "examples_seed" :comment "" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv "pyKwArgs"
@@ -270,70 +234,89 @@ facterModule.cs -i examples
 
         return(cmndOutcome)
 
-####+BEGIN: bx:dblock:python:enum :enumName "ReactFramework" :comment ""
-""" #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Enum       [[elisp:(outline-show-subtree+toggle)][||]] /ReactFramework/  [[elisp:(org-cycle)][| ]]
-#+end_org """
-@enum.unique
-class ReactFramework(enum.Enum):
-####+END:
-        React = "react"
-        Gatsby = "gatsby"
-        NoneFound = "noneFound"
 
-####+BEGIN: b:py3:cs:func/typing :funcName "whichReactFramework_" :funcType "extTyped" :deco "track"
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "csCmndsRun" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 9999 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  F-T-extTyped [[elisp:(outline-show-subtree+toggle)][||]] /whichReactFramework_/  deco=track  [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<csCmndsRun>>  =verify= argsMin=1 argsMax=9999 ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-@cs.track(fnLoc=True, fnEntry=True, fnExit=True)
-def whichReactFramework_(
-####+END:
-) -> ReactFramework:
-        """ #+begin_org
-** [[elisp:(org-cycle)][| *DocStr | ] Look in the current directory for files that indicate which React framework is being used.
-        #+end_org """
-        # Check for Gatsby-specific configuration files
-        current_dir = pathlib.Path('.')
-        
-        # Gatsby indicators
-        gatsby_config_files = [
-            'gatsby-config.js',
-            'gatsby-config.ts',
-            'gatsby-config.mjs',
-        ]
-        
-        for gatsby_file in gatsby_config_files:
-            if (current_dir / gatsby_file).exists():
-                return ReactFramework.Gatsby
-        
-        # Check for .gatsby-files marker directory
-        if (current_dir / '.gatsby-files').exists():
-            return ReactFramework.Gatsby
-        
-        # Check for pure React config files (CRA or similar)
-        react_config_files = [
-            'package.json',  # All React projects have this
-            'react-scripts',  # CRA dependency (in node_modules, but check package.json)
-        ]
-        
-        # Check if package.json exists and contains react/react-scripts
-        package_json_path = current_dir / 'package.json'
-        if package_json_path.exists():
-            try:
-                import json
-                with open(package_json_path, 'r') as f:
-                    package_data = json.load(f)
-                    # Check if react or react-scripts is in dependencies
-                    deps = package_data.get('dependencies', {})
-                    devDeps = package_data.get('devDependencies', {})
-                    if 'react' in deps or 'react' in devDeps or 'react-scripts' in devDeps:
-                        return ReactFramework.React
-            except (json.JSONDecodeError, IOError):
-                pass
-        
-        # If neither Gatsby nor React found, return NoneFound
-        return ReactFramework.NoneFound
+class csCmndsRun(cs.Cmnd):
+    cmndParamsMandatory = [ ]
+    cmndParamsOptional = [ ]
+    cmndArgsLen = {'Min': 1, 'Max': 9999,}
 
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmnd(self,
+             rtInv: cs.RtInvoker,
+             cmndOutcome: b.op.Outcome,
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
+    ) -> b.op.Outcome:
+
+        failed = b_io.eh.badOutcome
+        callParamsDict = {}
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
+            return failed(cmndOutcome)
+        cmndArgsSpecDict = self.cmndArgsSpec()
+####+END:
+        self.cmndDocStr(f""" #+begin_org
+** [[elisp:(org-cycle)][| *CmndDesc:* | ]]
+Run the declared CsCmnds. With arg =all=, run every CsCmnd in the plant's
+csCmndsList; otherwise run those whose =verb= matches the given args. Each
+CsCmnd is run as =plantOfThisSeed -i verb --pars args=. A failing CsCmnd stops
+the run unless its =doContinue= is True.
+        #+end_org """)
+
+        cmndArgs = self.cmndArgsGet("0&9999", cmndArgsSpecDict, argsList)
+
+        csCmndsList = csCmndsList_seedInfo.csCmndSeedInfo.csCmndsList
+        if csCmndsList is None:
+            csCmndsList = []
+
+        if cmndArgs[0] == "all":
+            selected = csCmndsList
+        else:
+            selected = [each for each in csCmndsList if each.verb in cmndArgs]
+
+        if len(selected) == 0:
+            print("No matching CsCmnds -- nothing to run")
+            return cmndOutcome.set(opResults=None)
+
+        plant = seedsLib.seededCsxuInfo.plantOfThisSeed
+        if plant is None:
+            b_io.eh.problem_usageError("No plantOfThisSeed -- csCmndsRun must be invoked through a plant")
+            return failed(cmndOutcome)
+
+        for eachCsCmnd in selected:
+            parsStr = ""
+            if eachCsCmnd.pars is not None:
+                for key in eachCsCmnd.pars:
+                    parsStr += f'--{key}="{eachCsCmnd.pars[key]}" '
+            runLine = f'{plant} -i {eachCsCmnd.verb} {parsStr}{eachCsCmnd.args or ""}'
+            if b.subProc.WOpW(invedBy=self, log=1).bash(runLine).isProblematic():
+                if eachCsCmnd.doContinue:
+                    continue
+                return failed(cmndOutcome)
+
+        return cmndOutcome.set(opResults=None)
+
+####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self, ):
+####+END:
+        """
+***** Cmnd Args Specification
+"""
+        cmndArgsSpecDict = cs.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0&9999",
+            argName="cmndArgs",
+            argDefault='',
+            argChoices=[],
+            argDescription="=all= or a list of csCmnd verbs to run"
+        )
+        return cmndArgsSpecDict
 
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "whichReactFramework" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
@@ -361,7 +344,7 @@ class whichReactFramework(cs.Cmnd):
 Detect which React framework is being used in the current directory.
         #+end_org """)
 
-        result: ReactFramework = whichReactFramework_()
+        result = "IGNORE"
         
         #print(f"{result.value}")
 

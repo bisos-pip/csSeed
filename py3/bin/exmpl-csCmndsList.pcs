@@ -15,7 +15,8 @@ from bisos.csSeed import csCmndsList_seedInfo
 csCmnd = csCmndsList_seedInfo.csCmnd
 
 csCmndsList = [
-    csCmnd("verb", pars={"name", "value"}, args="args come Here", doContinue=True)
+    # csCmnd("verb", pars=collections.OrderedDict([("name", "value")]), args="args come Here", doContinue=True),
+    csCmnd("commonExamples", doContinue=True),
 ]
 
 csCmndsList_seedInfo.setup(
