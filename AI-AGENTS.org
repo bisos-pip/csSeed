@@ -1,0 +1,143 @@
+#+title: AI Agents Guidance for bisos.csSeed
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+* Table of Contents     :TOC:
+- [[#what-this-is][What this is]]
+  - [[#implementation-note-----the-magic-which-users-need-not-understand][Implementation note --- the magic, which users need not understand]]
+- [[#this-repo-is-part-of-bisos-pip----common-structure-of-repos-in-the-bisos-pip-organization][This Repo is Part of bisos-pip -- Common Structure of Repos in the bisos-pip Organization]]
+- [[#this-repo-is-layered-on-top-of-pycs-framework][This Repo is Layered on Top of PyCS-Framework]]
+- [[#commands][Commands]]
+- [[#the-seed--plant-model-----the-core-concept][The seed / plant model --- the core concept]]
+- [[#writing-cs-commands][Writing CS commands]]
+
+* What this is
+
+=bisos.csSeed= is a Python package, part of BISOS (ByStar Internet Services
+Operating System), built on the [[https://github.com/bisos-pip/pycs][PyCS-Framework]]
+(=bisos.b.cs=).
+
+The Python project lives under =py3/=; the package source is =py3/bisos/csSeed/=.
+The executables are in =py3/bin=.
+
+This package is a middle layer. Users will not be using it directly.
+It assists others in developing =seeded CSXUs= (Command Services eXecution Units).
+
+Planted CSXUs are partial python files that "atexit" execute seeded CSXUs.
+Planted CSXUs specify parameters that define behaviour of the seeded CSXUs.
+The setup.py files for python pip packages are such examples.
+In the PyCS-Framework, we formalize this concept as seed and plant.
+In setup.py the behaviour is unnamed.
+
+bisos.csSeed provides two types of seeds.
+1) addCmnds-seed.cs and its example plants: addCmnds-helloWorld.pcs and exmpl-addCmnds.pcs
+2) csCmndsList-seed.cs and its exmpl-csCmndsList.pcs
+
+(1) Allows you to create command services without a main.
+(2) Allows you to execute a list of csCmnd-s of the seed.
+
+** Implementation note --- the magic, which users need not understand
+
+From a user's perspective this is all magic: she puts stuff into the plant,
+and the seed does the work. The mechanism behind that:
+
+A plant does no work itself. At interpreter exit it re-execs the seed --- it
+locates the seed =.cs= on =$PATH= (=shutil.which=) and re-runs the process as
+the seed. The seed records the pairing in the =seededCsxuInfo= singleton
+(=seedOfThisPlant= and =plantOfThisSeed=), imports the plant back in as a module
+named =plantedCsu=, merges the plant's commands into its own, and runs
+=g_csMain=. The seed/plant relationship is therefore a two-way pairing, not a
+one-way germination --- but none of this is visible to the user.
+
+
+* This Repo is Part of bisos-pip -- Common Structure of Repos in the bisos-pip Organization
+
+See @/bisos/git/bxRepos/bisos-pip/.github/profile/readme.org for details.
+
+* This Repo is Layered on Top of PyCS-Framework
+
+PyCS-Framework is documented in:
+
+@/bisos/panels/bisos-core/PyCsFwrk/_nodeBase_/fullUsagePanel-en.org
+--- the framework's own usage panel; read for the semantics of =cs.Cmnd=,
+=g_csMain=, =cs.examples.*=, parameter / argument specs, and RO (remote
+operations).
+
+The PyCS-Framework package is at: /bisos/git/bxRepos/bisos-pip/pycs
+--- the framework source (=bisos.csPlayer= and related); consult when you need
+how the CS player, =csuList= imports, or seeding hooks actually work.
+
+PyCS-Framework augments the bisos.b package which is at /bisos/git/bxRepos/bisos-pip/b
+--- =bisos.b= provides the =cs=, =b_io=, and =b.op= APIs this repo imports.
+Its Blee-Panel is @/bisos/git/bxRepos/bisos-pip/b/py3/panels/bisos.b/_nodeBase_/fullUsagePanel-en.org
+
+When descending into either repo, follow its own =AI-AGENTS.org= (if present)
+the same way this file points up to the org-wide readme.
+
+
+* Commands
+
+All commands assume you are in =py3/=. For build, install, and publish, see
+*bisos-pip Build System* above.
+
+- *Lint / type-check* (paths from the in-file "Workbench" headers): the venv
+  interpreter is =/bisos/venv/py3/bisos3/bin/python=; linters live in
+  =/bisos/pipx/bin/= (=pyflakes=, =flake8=, =pylint=, =pycodestyle=). =mypy= is
+  used (a =.mypy_cache/= for py3.11 is present).
+- *Smoke test* (no test suite exists): run a seed's example menu, e.g.
+  =bin/addCmnds-helloWorld.pcs= (prints the example menu) or
+  =bin/addCmnds-helloWorld.pcs -i helloWorld= (runs the =helloWorld= command).
+
+There is no unit-test framework in this repo. Verification is done by running
+the =.cs=/=.pcs= executables and inspecting their output --- the expected output
+is captured inline in each command via =self.captureRunStr(...)=.
+
+Some execution examples are at:
+@/bisos/git/bxRepos/bisos-pip/csSeed/py3/panels/bisos.csSeed/_nodeBase_/fullUsagePanel-en.org
+
+* The seed / plant model --- the core concept
+
+This is the single most important thing to understand before editing.
+
+A *seed* is a generic, packaged CS executable (=bin/*-seed.cs=) that supplies
+the framework =main=, the common parameters, and the player/examples machinery ---
+but no domain commands. A *plant* is a =.pcs= script that imports a seed module
+and supplies the actual domain commands. At runtime they combine into one tool.
+
+The wiring (see =bisos/csSeed/seedsLib.py=):
+
+1. You run a plant, e.g. =bin/addCmnds-helloWorld.pcs=. It does
+   =from bisos.csSeed import addCmnds_seed=.
+2. =addCmnds_seed.py= registers an =atexit= hook (=atexit_plantWithWhich=) that
+   calls =seedsLib.plantWithWhich('addCmnds-seed.cs')=.
+3. On interpreter exit, =plantWithWhich= locates the seed =.cs= on =$PATH=
+   (=shutil.which=), records the plant<->seed pair in the =seededCsxuInfo=
+   singleton, and re-execs the seed via =b.importFile.execWithWhich=.
+4. The seed =.cs= runs =g_csMain=. Because =seededCsxuInfo.plantOfThisSeed= is
+   now set, the seed imports the original plant back as a module named
+   =plantedCsu= (=b.importFileAs('plantedCsu', ...)=), merges its commands into
+   the CSU list, and runs the plant's =examples_csu= / =examples_pcs=.
+
+So: *the plant file is the entry point you invoke, but the seed's =g_csMain= is
+what actually drives execution, with the plant injected as =plantedCsu=.*
+
+Two seed families exist, each with a =_seed= (atexit/wiring), =_seedInfo=
+(singleton + =setup()= for plants to register data), and a paired =bin/*-seed.cs=:
+
+- *addCmnds* (=addCmnds_seed.py=, =addCmnds_seedInfo.py=, =bin/addCmnds-seed.cs=):
+  the general-purpose seed. Plants register =seedType=, =kwSeedInfo=,
+  =commonParamsFuncs=, and =examplesFuncsList= via =addCmnds_seedInfo.setup()=.
+  Example plants: =bin/addCmnds-helloWorld.pcs=, =bin/exmpl-addCmnds.pcs=.
+- *csCmndsList* (=csCmndsList_seed.py=, =csCmndsList_seedInfo.py=,
+  =csCmndsList_csu.py=, =bin/csCmndsList-seed.cs=): for declaring a list of CS
+  commands (=CsCmnd= dataclass: =verb=, =pars=, =args=, =doContinue=) to be run,
+  potentially against multiple targets/clusters. This seed is also classified
+  =cs-mu= (uploadable --- see =--upload=). Example plant: =bin/exmpl-csCmndsList.pcs=.
+
+When adding a new seed, follow this same triple (=_seed= + =_seedInfo= + =bin/*-seed.cs=)
+and the singleton-=setup()= registration pattern.
+
+* Writing CS commands
+
+Commands are classes subclassing =cs.Cmnd= (from =bisos.b import cs=). Each
+declares =cmndParamsMandatory=, =cmndParamsOptional=, =cmndArgsLen=, and a

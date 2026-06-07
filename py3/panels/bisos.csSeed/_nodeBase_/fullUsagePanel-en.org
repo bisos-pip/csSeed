@@ -53,6 +53,29 @@
 * csSeed/py3/bisos/csSeed/cmnds_seedInfo.py is available as a generic machinary cmndsSeedInfo.kwSeedInfo
 * The Planted CS file .pcs is executed twice. Once as itself and once as plantedCsu. So far this has been harmless.
 * -B|
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "addCmnds --- Seed and Plants" :anchor "" :extraInfo ""
+* /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
+* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _addCmnds --- Seed and Plants_: |]]    [[elisp:(org-shifttab)][<)]] E|
+####+END
+####+BEGIN: blee:panel:icm:py:intro :outLevel 1 :sep nil :folding? nil :label "Seed" :icmName "addCmnds-seed.cs" :comment "" :afterComment "-- "
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Seed/ :: [[elisp:(lsip-local-run-command "addCmnds-seed.cs -i examples")][addCmnds-seed.cs]]  [[elisp:(lsip-local-run-command "addCmnds-seed.cs -i visit")][visit]]  [[elisp:(lsip-local-run-command "which -a addCmnds-seed.cs")][which -a]]  [[elisp:(lsip-local-run-command "addCmnds-seed.cs -i describe")][describe]] *|*  == *|*  --  [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:panel:icm:py:intro :outLevel 1 :sep nil :folding? nil :label "Plant" :icmName "addCmnds-helloWorld.pcs" :comment "" :afterComment "-- "
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Plant/ :: [[elisp:(lsip-local-run-command "addCmnds-helloWorld.pcs -i examples")][addCmnds-helloWorld.pcs]]  [[elisp:(lsip-local-run-command "addCmnds-helloWorld.pcs -i visit")][visit]]  [[elisp:(lsip-local-run-command "which -a addCmnds-helloWorld.pcs")][which -a]]  [[elisp:(lsip-local-run-command "addCmnds-helloWorld.pcs -i describe")][describe]] *|*  == *|*  --  [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:panel:icm:py:intro :outLevel 1 :sep nil :folding? nil :label "Plant" :icmName "exmpl-addCmnds.pcs" :comment "" :afterComment "-- "
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Plant/ :: [[elisp:(lsip-local-run-command "exmpl-addCmnds.pcs -i examples")][exmpl-addCmnds.pcs]]  [[elisp:(lsip-local-run-command "exmpl-addCmnds.pcs -i visit")][visit]]  [[elisp:(lsip-local-run-command "which -a exmpl-addCmnds.pcs")][which -a]]  [[elisp:(lsip-local-run-command "exmpl-addCmnds.pcs -i describe")][describe]] *|*  == *|*  --  [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "csCmndsList --- Seed and Plants" :anchor "" :extraInfo ""
+* /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
+* [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _csCmndsList --- Seed and Plants_: |]]    [[elisp:(org-shifttab)][<)]] E|
+####+END
+####+BEGIN: blee:panel:icm:py:intro :outLevel 1 :sep nil :folding? nil :label "Seed" :icmName "csCmndsList-seed.cs" :comment "" :afterComment "-- "
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Seed/ :: [[elisp:(lsip-local-run-command "csCmndsList-seed.cs -i examples")][csCmndsList-seed.cs]]  [[elisp:(lsip-local-run-command "csCmndsList-seed.cs -i visit")][visit]]  [[elisp:(lsip-local-run-command "which -a csCmndsList-seed.cs")][which -a]]  [[elisp:(lsip-local-run-command "csCmndsList-seed.cs -i describe")][describe]] *|*  == *|*  --  [[elisp:(org-shifttab)][<)]] E|
+####+END:
+####+BEGIN: blee:panel:icm:py:intro :outLevel 1 :sep nil :folding? nil :label "Plant" :icmName "example-csCmndsList.pcs" :comment "" :afterComment "-- "
+* [[elisp:(show-all)][(>]] [[elisp:(blee:menu-sel:outline:popupMenu)][+-]] [[elisp:(blee:menu-sel:navigation:popupMenu)][==]]  /Plant/ :: [[elisp:(lsip-local-run-command "example-csCmndsList.pcs -i examples")][example-csCmndsList.pcs]]  [[elisp:(lsip-local-run-command "example-csCmndsList.pcs -i visit")][visit]]  [[elisp:(lsip-local-run-command "which -a example-csCmndsList.pcs")][which -a]]  [[elisp:(lsip-local-run-command "example-csCmndsList.pcs -i describe")][describe]] *|*  == *|*  --  [[elisp:(org-shifttab)][<)]] E|
+####+END:
 ####+BEGIN: blee:bxPanel:foldingSection :outLevel 0 :sep t :title "Seeds -- Niching, Planting and SpreadPlants" :anchor "" :extraInfo ""
 * /[[elisp:(beginning-of-buffer)][|^]]  [[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]] [[elisp:(delete-other-windows)][|1]]/
 * [[elisp:(show-all)][(>]]  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_  _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_     [[elisp:(outline-show-subtree+toggle)][| _Seeds -- Niching, Planting and SpreadPlants_: |]]    [[elisp:(org-shifttab)][<)]] E|
