@@ -98,10 +98,7 @@ import pathlib
 import enum
 
 from bisos.csSeed import csCmndsList_seedInfo
-<<<<<<< HEAD
 from bisos.csSeed import seedsLib
-=======
->>>>>>> b7c674e7055193b35c80aedb1823c5843b6d993a
 
 import logging
 log = logging.getLogger(__name__)
