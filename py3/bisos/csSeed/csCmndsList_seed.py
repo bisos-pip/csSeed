@@ -39,11 +39,7 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 if 'csInfo' not in globals(): import typing ; csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['loadAs'], }
-<<<<<<< HEAD
-csInfo['version'] = '202606065544'
-=======
-csInfo['version'] = '202606085526'
->>>>>>> b7c674e7055193b35c80aedb1823c5843b6d993a
+csInfo['version'] = '202606085852'
 csInfo['status']  = 'inUse'
 csInfo['panel'] = 'csCmndsList_seed-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
