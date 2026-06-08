@@ -1,0 +1,5 @@
+* Idea --- Make csCmndsList be parallel to a Bash ommand line
+** "|" -- pipe is implemented as the previous result being kept in pyStdout -- Which is the cmndOutcome
+ Then the next command as its input has pyStdin=pyStdout. It then gets the previous result as input
+** "&&" is default doContinue=False
+** "||" doContinue=True
