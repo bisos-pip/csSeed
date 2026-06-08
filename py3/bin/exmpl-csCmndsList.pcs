@@ -9,7 +9,11 @@ import collections
 
 from bisos.csSeed import seedsLib
 
+<<<<<<< HEAD
 from bisos.csSeed import csCmndsList_seed #  noqa: F401  # type: ignore[unused-import] _atExit_
+=======
+from bisos.csSeed import csCmndsList_seed#  noqa: F401  # type: ignore[unused-import] _atExit_
+>>>>>>> b7c674e7055193b35c80aedb1823c5843b6d993a
 from bisos.csSeed import csCmndsList_seedInfo
 
 csCmnd = csCmndsList_seedInfo.csCmnd
@@ -23,6 +27,14 @@ csCmndsList_seedInfo.setup(
     csCmndsList=csCmndsList,
 )
 
+<<<<<<< HEAD
+=======
+
+csCmndsList_seedInfo.setup(
+    # examplesFuncsList=[lambda: examples_pcs(),],  # lambda is for forward reference
+)
+
+>>>>>>> b7c674e7055193b35c80aedb1823c5843b6d993a
 def examples_pcs() -> None:
     od = collections.OrderedDict
     cmnd = cs.examples.cmndEnter

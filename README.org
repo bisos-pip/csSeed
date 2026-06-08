@@ -11,11 +11,8 @@
 
 * Overview
 
-/bisos.csSeed/ provides general facilities for creation of arget Oriented
-Command-Services (tocs) Modules.
-
-In this model Targets are collections of accessible Managed Objects (MOs). Target-Modules
-are Python modules which are aware of the Target's set of MOs
+/bisos.csSeed/ provides general facilities for creation seeded CSXUs -- (Command
+Services eXecution Units).
 
 bisos.csSeed is a python package that uses the  [[https://github.com/bisos-pip/pycs][PyCS-Framework]].
 

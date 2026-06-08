@@ -28,8 +28,8 @@
 ####+BEGIN: b:prog:file/particulars :authors ("./inserts/authors-mb.org")
 """ #+begin_org
 * *[[elisp:(org-cycle)][| Particulars |]]* :: Authors, version
-** This File: /bisos/git/bxRepos/bisos-pip/gitist/py3/bisos/gitist/gitist_csu.py
-** File True Name: /bisos/git/auth/bxRepos/bisos-pip/gitist/py3/bisos/gitist/gitist_csu.py
+** This File: /bisos/git/auth/bxRepos/bisos-pip/csSeed/py3/bisos/csSeed/csCmndsList_csu.py
+** File True Name: /bisos/git/auth/bxRepos/bisos-pip/csSeed/py3/bisos/csSeed/csCmndsList_csu.py
 ** Authors: Mohsen BANAN, http://mohsen.banan.1.byname.net/contact
 #+end_org """
 ####+END:
@@ -39,9 +39,9 @@
 * *[[elisp:(org-cycle)][| Particulars-csInfo |]]*
 #+end_org """
 if 'csInfo' not in globals(): import typing ; csInfo: typing.Dict[str, typing.Any] = { 'moduleName': ['loadAs'], }
-csInfo['version'] = '202606053019'
+csInfo['version'] = '202606085303'
 csInfo['status']  = 'inUse'
-csInfo['panel'] = 'gitist_csu-Panel.org'
+csInfo['panel'] = 'csCmndsList_csu-Panel.org'
 csInfo['groupingType'] = 'IcmGroupingType-pkged'
 csInfo['cmndParts'] = 'IcmCmndParts[common] IcmCmndParts[param]'
 ####+END:
@@ -98,7 +98,10 @@ import pathlib
 import enum
 
 from bisos.csSeed import csCmndsList_seedInfo
+<<<<<<< HEAD
 from bisos.csSeed import seedsLib
+=======
+>>>>>>> b7c674e7055193b35c80aedb1823c5843b6d993a
 
 import logging
 log = logging.getLogger(__name__)

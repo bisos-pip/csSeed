@@ -43,9 +43,9 @@ def longDescription():
 # b:py3:pypi:setup/version Arguments  :forSys t :forPyPi t :constant "666"
 ####+BEGIN: b:py3:pypi:setup/version :comment "Auto Detected"
 
-# ./pypiUploadVer DID NOT exist -- forPypiVersion=0.12 -- forLocalVersion=0.11 -- constant=NA
+# ./pypiUploadVer DID NOT exist -- forPypiVersion=0.13 -- forLocalVersion=0.12 -- constant=NA
 def pkgVersion():
-        return '0.11'
+        return '0.12'
 
 ####+END:
 
@@ -55,6 +55,7 @@ def pkgVersion():
 requires = [
 "bisos",
 "bisos.b",
+"bisos.common",
 "bisos.csPlayer",
 "setuptools==75.8.0",
 "wheel==0.38.4",
@@ -65,9 +66,11 @@ requires = [
 ####+BEGIN: b:py3:pypi:setup/scripts :comment ""
 
 scripts = [
-'bin/cmnds-seed.cs',
-'bin/exampleCsu.pcs',
-'bin/helloWorld.pcs',
+'bin/addCmnds-helloWorld.pcs',
+'bin/addCmnds-seed.cs',
+'bin/csCmndsList-seed.cs',
+'bin/exmpl-addCmnds.pcs',
+'bin/exmpl-csCmndsList.pcs',
 ]
 ####+END:
 
