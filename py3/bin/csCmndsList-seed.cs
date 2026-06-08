@@ -1,7 +1,7 @@
 #!/bin/env python
 # -*- coding: utf-8 -*-
 
-import typing ; csInfo: typing.Dict[str, typing.Any] = {'category': 'csxu', 'name': 'gitist.cs', 'features': ['direct', 'uploader', 'seeded']}
+import typing ; csInfo: typing.Dict[str, typing.Any] = {'category': 'csxu', 'name': 'csCmndsList-seed.cs', 'features': ['direct', 'uploader', 'seeded']}
 
 csInfo['summary'] = """ #+begin_org
 * ~[Summary]~ :: A =CmndSvc= (Pkged, Direct, Seeded, Uploadable) for uploading and absorbing a facterModule.
@@ -117,12 +117,12 @@ if seedsLib.seededCsxuInfo.plantOfThisSeed is not None:
 (setq  b:py:cs:csuList
   (list
    "bisos.csPlayer.csxuFps_csu"
-   "bisos.gitist.gitist_csu"
+   "bisos.csSeed.csCmndsList_csu"
    "plantedCsu"
  ))
 #+END_SRC
 #+RESULTS:
-| bisos.csPlayer.csxuFps_csu | bisos.gitist.gitist_csu | plantedCsu |
+| bisos.csPlayer.csxuFps_csu | bisos.csSeed.csCmndsList_csu | plantedCsu |
 #+end_org """
 
 ####+BEGIN: b:py3:cs:framework/csuListImportPlus :pyImports t :csuImports t :csuParams t :csmuParams nil
@@ -131,9 +131,9 @@ if seedsLib.seededCsxuInfo.plantOfThisSeed is not None:
 #+end_org """
 
 from bisos.csPlayer import csxuFps_csu
-from bisos.gitist import gitist_csu
+from bisos.csSeed import csCmndsList_csu
 
-csuList = [ 'bisos.csPlayer.csxuFps_csu', 'bisos.gitist.gitist_csu', 'plantedCsu', ]
+csuList = [ 'bisos.csPlayer.csxuFps_csu', 'bisos.csSeed.csCmndsList_csu', 'plantedCsu', ]
 
 if seedsLib.seededCsxuInfo.plantOfThisSeed is None:
     csuList.remove('plantedCsu')
@@ -196,11 +196,11 @@ class examples(cs.Cmnd):
         csxuFps_csu.playerMenuExamples().pyCmnd()
 
         if seedsLib.seededCsxuInfo.seedOfThisPlant is None:
-            gitist_csu.examples_csu().pyCmnd(
+            csCmndsList_csu.examples_csu().pyCmnd(
                 # pyKwArgs={'uploadPath': uploadPathAbs}
             )
         else:
-            gitist_csu.examples_seed().pyCmnd(
+            csCmndsList_csu.examples_seed().pyCmnd(
                  # pyKwArgs={'uploadPath': uploadPathAbs}
             )
             seedsLib.plantedCsuExamplesRun()
