@@ -50,6 +50,12 @@ named =plantedCsu=, merges the plant's commands into its own, and runs
 one-way germination --- but none of this is visible to the user.
 
 
+* Collaboration Conventions for AI Agents
+
+- *Never suggest or perform a git commit.* The user manages all commits
+  themselves. When changes are ready to be committed, say: "Please commit
+  when ready." Do not use git commit, git add, or any variation.
+
 * This Repo is Part of bisos-pip -- Common Structure of Repos in the bisos-pip Organization
 
 See @/bisos/git/bxRepos/bisos-pip/.github/profile/readme.org for details.

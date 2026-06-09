@@ -1,5 +1,47 @@
 * Idea --- Make csCmndsList be parallel to a Bash ommand line
+SCHEDULED: <2026-06-09 Tue>
 ** "|" -- pipe is implemented as the previous result being kept in pyStdout -- Which is the cmndOutcome
  Then the next command as its input has pyStdin=pyStdout. It then gets the previous result as input
 ** "&&" is default doContinue=False
 ** "||" doContinue=True
+
+** Adoption of this syntax on command line, requires disable bash processing of && and || etc. How is that possible?
+
+* Concept of csCmndEval
+CLOSED: [2026-06-09 Mon] SCHEDULED: <2026-06-09 Tue>
+** DONE Implemented in py3/bisos/csSeed/csCmndsList_csu.py
+
+- csCmndEval does not assume all.
+- LATER-NOT-NOW: It can receive its own args and params which override args of the first cmnd in the list
+- It Supports doContinue
+- It supports pyPipe=True in CsCmnd.pars; when set, opResults of that command become --pyStdin of the next
+
+** Implementation Notes
+- pyPipe=True in a CsCmnd's pars is eval-internal: it is stripped from the subprocess invocation line.
+- The receiving command reads pyStdin as a normal CS parameter (--pyStdin="<value>").
+- On doContinue=True after failure, pyStdin is cleared (not forwarded).
+- csCmndEval appears in the examples menu alongside csCmndsRun.
+
+** Needs Testing
+- Basic case: csCmndEval all -- runs all selected csCmnds in sequence, same as csCmndsRun.
+- doContinue=False (default): a failing command halts the sequence.
+- doContinue=True: a failing command is skipped, pyStdin cleared, sequence continues.
+- pyPipe=True: opResults of command N are injected as --pyStdin into command N+1's invocation.
+- pyPipe absent or False: pyStdin is not forwarded (each command is independent).
+- Chain of multiple piped commands: N pipes into N+1 pipes into N+2.
+- pyPipe=True on the last command in the list: opResults surfaced as csCmndEval's own opResults.
+- Verb-filtered invocation (not "all"): only matching verbs run, pipe chain respects filtered order.
+
+* The Concept of pyPipe
+SCHEDULED: <2026-06-09 Tue>
+The csCmnd that is piping out information, will include --pyPipe
+ csCmndsListEval, detects that puts it pyIn of the next command
+
+ This can be extended not to just csCmndsList, but become part of the PyCS.
+
+ The command line syntax now becomes:
+
+ csmu.cs -i csCmnd --pyPipe args come here ---  -i nextCsCmnd -p itsOwnPram its own args
+ csmu.cs -i csCmnd  args come here | -i nextCsCmnd -p itsOwnPram its own args
+
+ Here is where the confusion lies. Implimenting this for csCmndsList is relatively easy. And we should start there. But I am also thinking of implementing this for all of PyCS framework. So, the command line will look like this: There are two forms that I have in mind. ===  csmu.cs -i csCmnd -p pyPipe args come here ---  -i nextCsCmnd -p itsOwnPram its own args ==== in this case the combination of --- and -p inPipe gives us what we need. The other option is to somehow tell Bash not to process "|" "&&" etc. and pass all of the lines to csmu.

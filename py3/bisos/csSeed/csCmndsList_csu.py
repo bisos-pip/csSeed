@@ -181,6 +181,11 @@ class examples_csu(cs.Cmnd):
             verbs = " ".join(each.verb for each in csCmndsList if each.verb)
             cmnd('csCmndsRun', args=verbs, comment=f" # Run the specified csCmnds by verb")
 
+        cs.examples.menuChapter('=Evaluate the declared CsCmnds (with pyPipe support)=')
+        cmnd('csCmndEval', args="all", comment=f" # Evaluate all declared csCmnds")
+        if csCmndsList is not None and len(csCmndsList) != 0:
+            cmnd('csCmndEval', args=verbs, comment=f" # Evaluate the specified csCmnds by verb")
+
         return(cmndOutcome)
 
 
@@ -319,39 +324,101 @@ the run unless its =doContinue= is True.
         return cmndArgsSpecDict
 
 
-####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "whichReactFramework" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 0 :pyInv ""
+####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "csCmndEval" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 1 :argsMax 9999 :pyInv ""
 """ #+begin_org
-*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<whichReactFramework>>  =verify= ro=cli   [[elisp:(org-cycle)][| ]]
+*  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  CmndSvc-   [[elisp:(outline-show-subtree+toggle)][||]] <<csCmndEval>>  =verify= argsMin=1 argsMax=9999 ro=cli   [[elisp:(org-cycle)][| ]]
 #+end_org """
-class whichReactFramework(cs.Cmnd):
+class csCmndEval(cs.Cmnd):
     cmndParamsMandatory = [ ]
     cmndParamsOptional = [ ]
-    cmndArgsLen = {'Min': 0, 'Max': 0,}
+    cmndArgsLen = {'Min': 1, 'Max': 9999,}
 
     @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
     def cmnd(self,
              rtInv: cs.RtInvoker,
              cmndOutcome: b.op.Outcome,
+             argsList: typing.Optional[list[str]]=None,  # CsArgs
     ) -> b.op.Outcome:
 
         failed = b_io.eh.badOutcome
         callParamsDict = {}
-        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, None).isProblematic():
+        if self.invocationValidate(rtInv, cmndOutcome, callParamsDict, argsList).isProblematic():
             return failed(cmndOutcome)
+        cmndArgsSpecDict = self.cmndArgsSpec()
 ####+END:
         self.cmndDocStr(f""" #+begin_org
 ** [[elisp:(org-cycle)][| *CmndDesc:* | ]]
-Detect which React framework is being used in the current directory.
+Evaluate the declared CsCmnds in sequence. With arg =all=, evaluate every
+CsCmnd in the plant's csCmndsList; otherwise evaluate those whose =verb=
+matches the given args. Supports =doContinue= semantics. When a CsCmnd's
+=pars= contains =pyPipe=True=, its =opResults= are passed as =--pyStdin= to
+the next command in the sequence.
         #+end_org """)
 
-        result = "IGNORE"
-        
-        #print(f"{result.value}")
+        cmndArgs = self.cmndArgsGet("0&9999", cmndArgsSpecDict, argsList)
 
-        return cmndOutcome.set(
-                opError=b.OpError.Success,
-                opResults=result,
+        csCmndsList = csCmndsList_seedInfo.csCmndSeedInfo.csCmndsList
+        if csCmndsList is None:
+            csCmndsList = []
+
+        if cmndArgs[0] == "all":
+            selected = csCmndsList
+        else:
+            selected = [each for each in csCmndsList if each.verb in cmndArgs]
+
+        if len(selected) == 0:
+            print("No matching CsCmnds -- nothing to evaluate")
+            return cmndOutcome.set(opResults=None)
+
+        plant = seedsLib.seededCsxuInfo.plantOfThisSeed
+        if plant is None:
+            b_io.eh.problem_usageError("No plantOfThisSeed -- csCmndEval must be invoked through a plant")
+            return failed(cmndOutcome)
+
+        pyStdin = None
+        for eachCsCmnd in selected:
+            parsStr = ""
+            if eachCsCmnd.pars is not None:
+                for key in eachCsCmnd.pars:
+                    if key == "pyPipe":
+                        continue  # pyPipe is eval-internal, not passed to the subprocess
+                    parsStr += f'--{key}="{eachCsCmnd.pars[key]}" '
+            if pyStdin is not None:
+                parsStr += f'--pyStdin="{pyStdin}" '
+            runLine = f'{plant} -i {eachCsCmnd.verb} {parsStr}{eachCsCmnd.args or ""}'
+            subOutcome = b.subProc.WOpW(invedBy=self, log=1).bash(runLine)
+            if subOutcome.isProblematic():
+                if eachCsCmnd.doContinue:
+                    pyStdin = None
+                    continue
+                return failed(cmndOutcome)
+            if eachCsCmnd.pars is not None and eachCsCmnd.pars.get("pyPipe") == True:
+                pyStdin = subOutcome.opResults
+            else:
+                pyStdin = None
+
+        return cmndOutcome.set(opResults=pyStdin)
+
+####+BEGIN: b:py3:cs:method/args :methodName "cmndArgsSpec" :methodType "anyOrNone" :retType "bool" :deco "default" :argsList "self"
+    """ #+begin_org
+**  _[[elisp:(blee:menu-sel:outline:popupMenu)][±]]_ _[[elisp:(blee:menu-sel:navigation:popupMenu)][Ξ]]_ [[elisp:(outline-show-branches+toggle)][|=]] [[elisp:(bx:orgm:indirectBufOther)][|>]] *[[elisp:(blee:ppmm:org-mode-toggle)][|N]]*  Mtd-T-anyOrNone [[elisp:(outline-show-subtree+toggle)][||]] /cmndArgsSpec/ deco=default  deco=default  [[elisp:(org-cycle)][| ]]
+    #+end_org """
+    @cs.track(fnLoc=True, fnEntry=True, fnExit=True)
+    def cmndArgsSpec(self, ):
+####+END:
+        """
+***** Cmnd Args Specification
+"""
+        cmndArgsSpecDict = cs.CmndArgsSpecDict()
+        cmndArgsSpecDict.argsDictAdd(
+            argPosition="0&9999",
+            argName="cmndArgs",
+            argDefault='',
+            argChoices=[],
+            argDescription="=all= or a list of csCmnd verbs to evaluate"
         )
+        return cmndArgsSpecDict
+
 
 
 ####+BEGIN: b:py3:cs:cmnd/classHead :cmndName "placeHolder" :comment "" :extent "verify" :ro "cli" :parsMand "" :parsOpt "" :argsMin 0 :argsMax 9999 :pyInv ""
